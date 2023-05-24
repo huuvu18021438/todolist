@@ -1,0 +1,39 @@
+CREATE TABLE persons (
+ id SERIAL PRIMARY KEY,
+ version INTEGER CHECK (version >= 1) DEFAULT 1,
+ first_name VARCHAR (100) NOT NULL,
+ last_name VARCHAR (100) NOT NULL,
+ create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ last_modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+ );
+
+CREATE TABLE tags (
+ id SERIAL PRIMARY KEY,
+ version INTEGER CHECK (version >= 1) DEFAULT 1,
+ name VARCHAR (100) NOT NULL,
+ create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ last_modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+ );
+
+ CREATE TABLE items (
+ id SERIAL PRIMARY KEY,
+ version INTEGER CHECK (version >= 1) DEFAULT 1,
+ status VARCHAR (15) NOT NULL,
+ description VARCHAR (4000) NOT NULL,
+ create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ last_modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+ );
+
+ CREATE TABLE items_tags (
+ id SERIAL PRIMARY KEY,
+ item_id INTEGER REFERENCES items(id),
+ tag_id INTEGER REFERENCES tags(id)
+ );
+
+ ALTER TABLE items
+ ADD COLUMN assignee_id INTEGER;
+
+ ALTER TABLE items
+ ADD CONSTRAINT fk_item_assignee_id
+ FOREIGN KEY (assignee_id)
+ REFERENCES persons (id);
